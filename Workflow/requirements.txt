@@ -1,4 +1,4 @@
 pandas==2.2.3
 kaggle
 pycaret==3.3.2
-Apache Airflow==2.10.2
+Apache-Airflow==2.10.2
