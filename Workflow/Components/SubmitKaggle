@@ -1,1 +1,39 @@
+import pycaret.classification as pc
+import pandas as pd
+import kaggle
+from airflow import DAG
+from airflow.operators.python_operator import PythonOperator
+from datetime import datetime
+
+def submit_kaggle():
+    
+    model = pc.load_model('model')
+
+    # Cargar los datos de prueba
+    test_data = pd.read_csv('test.csv')
+    
+   predictions = pc.predict_model(model, data=test_data)
+    
+    # Guardar las predicciones en formato para Kaggle
+    submission = pd.DataFrame({
+        'ID': test_data['ID_column'],  # Ajustar el nombre de la columna según tu dataset
+        'loan_status': predictions['Label']  # Ajustar según el formato del dataset
+    })
+    submission.to_csv('submission.csv', index=False)
+    
+    # (Opcional) Someter el archivo a Kaggle
+    kaggle.api.competition_submit(file_name='/path_local/submission.csv', 
+                                  message='First submission', 
+                                  competition='nombre_competencia')
+
+# Definir el DAG de Airflow
+dag = DAG('SubmitKaggle', description='Submit predictions to Kaggle',
+          schedule_interval='@once', start_date=datetime(2024, 10, 13))
+
+
+submit_task = PythonOperator(
+    task_id='submit_kaggle',
+    python_callable=submit_kaggle,
+    dag=dag
+)
 
