@@ -9,7 +9,6 @@ class MLSystem:
         pass
 
     def load_data(self):
-        # Simula la carga de un dataset
         data = pd.read_csv("train.csv")
         X= data.drop(columns=['loan_status'])
         X_data = pd.get_dummies(X)
@@ -17,12 +16,10 @@ class MLSystem:
         return X_data, y
 
     def preprocess_data(self, X):
-        # Simula el preprocesamiento de los datos
         scaler = StandardScaler().fit(X)
         return scaler, scaler.transform(X)
 
     def train_model(self, X, y):
-        # Simula el entrenamiento de un modelo
         model = LogisticRegression(random_state=42)
         model.fit(X, y)
         return model
