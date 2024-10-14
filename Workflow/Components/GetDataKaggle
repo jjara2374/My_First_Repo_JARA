@@ -6,7 +6,7 @@ from datetime import datetime
 def get_data_kaggle():
    kaggle.api.authenticate()
     
-   kaggle.api.dataset_download_files('nombre_del_dataset', path='/path_local', unzip=True)
+   kaggle.api.dataset_download_files('train.csv', path='/Workflow/dags/', unzip=True)
 
 # Definir el DAG de Airflow
 dag = DAG('GetDataKaggle', description='Download data from Kaggle',
