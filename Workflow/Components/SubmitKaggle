@@ -8,21 +8,15 @@ from datetime import datetime
 def submit_kaggle():
     
     model = pc.load_model('model')
-
-    # Cargar los datos de prueba
     test_data = pd.read_csv('test.csv')
-    
-   predictions = pc.predict_model(model, data=test_data)
-    
-    # Guardar las predicciones en formato para Kaggle
+    predictions = pc.predict_model(model, data=test_data)
     submission = pd.DataFrame({
-        'ID': test_data['ID_column'],  # Ajustar el nombre de la columna según tu dataset
-        'loan_status': predictions['Label']  # Ajustar según el formato del dataset
+        'ID': test_data['ID_column'],  
+        'loan_status': predictions['Label']  
     })
     submission.to_csv('submission.csv', index=False)
     
-    # (Opcional) Someter el archivo a Kaggle
-    kaggle.api.competition_submit(file_name='/path_local/submission.csv', 
+    kaggle.api.competition_submit(file_name='submission.csv', 
                                   message='First submission', 
                                   competition='nombre_competencia')
 
