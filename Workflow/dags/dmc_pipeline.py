@@ -28,8 +28,11 @@ dag = DAG(
 )
 
 def load_data():
-    data = load_iris()
-    return data.data.tolist(), data.target.tolist()
+    data = pd.read_csv("train.csv")
+    X= data.drop(columns=['loan_status'])
+    X_data = pd.get_dummies(X)
+    y = data['loan_status']
+    return X_data, y
 
 def preprocess_data(ti):
     X, y = ti.xcom_pull(task_ids='load_data')
