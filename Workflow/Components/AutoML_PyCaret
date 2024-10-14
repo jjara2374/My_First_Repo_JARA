@@ -5,16 +5,10 @@ from airflow.operators.python_operator import PythonOperator
 from datetime import datetime
 
 def automl_pycaret():
-    # Cargar el dataset
-    df = pd.read_csv('train.csv')
-    
+   df = pd.read_csv('train.csv')
    setup = pc.setup(data=df, target='target_column_name', silent=True, verbose=False)
-    
-    # Comparar modelos y seleccionar el mejor
-    best_model = pc.compare_models()
-    
-    # Guardar el mejor modelo
-    pc.save_model(best_model, '/Machine/model_pycaret')
+   best_model = pc.compare_models()
+   pc.save_model(best_model, '/Workflow/dags/logistic_model.joblib')
 
 # Definir el DAG de Airflow
 dag = DAG('AutoML_PyCaret', description='Run AutoML with PyCaret',
